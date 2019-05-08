@@ -1,4 +1,4 @@
-package guru.springfamework.api.v1.model;
+package acs.springfamework.spring5mvcrest.api.v1.model;
 
 /**
  * Created by jt on 9/24/17.

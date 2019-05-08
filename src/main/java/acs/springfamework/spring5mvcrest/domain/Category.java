@@ -1,4 +1,4 @@
-package guru.springfamework.domain;
+package acs.springfamework.spring5mvcrest.domain;
 
 import lombok.Data;
 
