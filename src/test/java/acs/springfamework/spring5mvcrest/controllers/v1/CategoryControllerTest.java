@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import acs.springfamework.spring5mvcrest.api.v1.model.CategoryDTO;
 import acs.springfamework.spring5mvcrest.services.CategoryService;
 
-public class CategoryControllerTest {
+public class CategoryControllerTest extends AbstractRestControllerTest {
 
 	public static final String NAME = "Jim";
 
