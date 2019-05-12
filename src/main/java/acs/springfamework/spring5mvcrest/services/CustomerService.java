@@ -13,5 +13,7 @@ public interface CustomerService {
 	public CustomerDTO createNewCustomer(CustomerDTO customerDTO);
 	
 	public CustomerDTO saveCustomerByDTO(Long idCustomer, CustomerDTO customerDTO);
-	
+
+	public CustomerDTO patchCustomer(Long idCustomer, CustomerDTO customerDTO);
+
 }

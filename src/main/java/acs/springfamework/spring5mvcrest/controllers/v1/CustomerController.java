@@ -3,6 +3,7 @@ package acs.springfamework.spring5mvcrest.controllers.v1;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -49,6 +50,12 @@ public class CustomerController {
 	@PutMapping("/{idCustomer}")
     public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable Long idCustomer, @RequestBody CustomerDTO customerDTO){
         return new ResponseEntity<CustomerDTO>(customerService.saveCustomerByDTO(idCustomer, customerDTO),
+                HttpStatus.OK);
+    }
+
+	@PatchMapping("/{idCustomer}")
+    public ResponseEntity<CustomerDTO> patchCustomer(@PathVariable Long idCustomer, @RequestBody CustomerDTO customerDTO){
+        return new ResponseEntity<CustomerDTO>(customerService.patchCustomer(idCustomer, customerDTO),
                 HttpStatus.OK);
     }
 

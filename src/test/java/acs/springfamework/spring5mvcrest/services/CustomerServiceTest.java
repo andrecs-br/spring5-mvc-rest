@@ -74,7 +74,21 @@ public class CustomerServiceTest {
         assertEquals(LASTNAME, customerDTO.getLastName());
 
     }
-    
+
+    @Test(expected=RuntimeException.class)
+    public void getCustomerByIdNotFound() throws Exception {
+
+        when(customerRepository.findById(anyLong())).thenReturn(Optional.of(null));
+
+        //when
+        CustomerDTO customerDTO = customerService.getCustomerById(ID);
+
+        //then
+        assertEquals(FIRSTNAME, customerDTO.getFirstName());
+        assertEquals(LASTNAME, customerDTO.getLastName());
+
+    }
+
     @Test
     public void createNewCustomer() throws Exception {
 
@@ -108,6 +122,27 @@ public class CustomerServiceTest {
         Customer savedCustomer = new Customer();
         savedCustomer.setFirstName(customerDTO.getFirstName());
         savedCustomer.setLastName(customerDTO.getLastName());
+        savedCustomer.setId(1l);
+
+        when(customerRepository.save(any(Customer.class))).thenReturn(savedCustomer);
+
+        //when
+        CustomerDTO savedDto = customerService.saveCustomerByDTO(1L, customerDTO);
+
+        //then
+        assertEquals(customerDTO.getFirstName(), savedDto.getFirstName());
+    }
+
+    @Test
+    public void patchCustomer() throws Exception {
+
+        //given
+        CustomerDTO customerDTO = new CustomerDTO();
+        customerDTO.setFirstName("Jim");
+
+        Customer savedCustomer = new Customer();
+        savedCustomer.setFirstName(customerDTO.getFirstName());
+        savedCustomer.setLastName("Jose");
         savedCustomer.setId(1l);
 
         when(customerRepository.save(any(Customer.class))).thenReturn(savedCustomer);
