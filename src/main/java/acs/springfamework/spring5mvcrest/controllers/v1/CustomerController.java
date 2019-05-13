@@ -17,6 +17,8 @@ import acs.springfamework.spring5mvcrest.api.v1.model.CustomerListDTO;
 import acs.springfamework.spring5mvcrest.services.CustomerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @Api(tags={"Customers"})
 @RestController
@@ -42,6 +44,14 @@ public class CustomerController {
 		return new CustomerListDTO(customerService.getAllCustomers());
 	}
 	
+	@ApiOperation(value="Return a specific customer.", 
+			notes="Some notes here.",
+			produces="application/JSON",
+			response=CustomerDTO.class)
+	@ApiResponses(value= {
+			@ApiResponse(code=200, message="Customer successfully encountered"),
+			@ApiResponse(code=404, message="Customer didn't find")
+	})
 	@GetMapping("/{idCustomer}")
 	@ResponseStatus(HttpStatus.OK)
 	public CustomerDTO getCustomerById(@PathVariable Long idCustomer) {
