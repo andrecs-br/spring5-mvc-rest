@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import acs.springfamework.spring5mvcrest.api.v1.model.CustomerDTO;
 import acs.springfamework.spring5mvcrest.api.v1.model.CustomerListDTO;
 import acs.springfamework.spring5mvcrest.services.CustomerService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
+@Api(tags={"Customers"})
 @RestController
 @RequestMapping(CustomerController.BASE_URL)
 public class CustomerController {
@@ -28,6 +31,10 @@ public class CustomerController {
 		this.customerService = customerService;
 	}
 	
+	@ApiOperation(value="Return all customers.", 
+			notes="Some notes here.",
+			produces="application/JSON",
+			response=CustomerListDTO.class)
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	public CustomerListDTO getAllCustomers() {
