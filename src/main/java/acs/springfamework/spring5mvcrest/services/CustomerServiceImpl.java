@@ -97,4 +97,9 @@ public class CustomerServiceImpl implements CustomerService {
 
 	}
 
+	@Override
+	public void deleteCustomer(Long idCustomer) {
+		customerRepository.deleteById(idCustomer);
+	}
+
 }

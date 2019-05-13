@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
 import java.util.List;
@@ -21,9 +22,11 @@ import acs.springfamework.spring5mvcrest.bootstrap.Bootstrap;
 import acs.springfamework.spring5mvcrest.domain.Customer;
 import acs.springfamework.spring5mvcrest.repositories.CategoryRepository;
 import acs.springfamework.spring5mvcrest.repositories.CustomerRepository;
+import lombok.extern.slf4j.Slf4j;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
+@Slf4j
 public class CustomerServiceImplIT {
 
     @Autowired
@@ -93,6 +96,20 @@ public class CustomerServiceImplIT {
         assertEquals(updatedName, updatedCustomer.getLastName());
         assertThat(originalFirstName, equalTo(updatedCustomer.getFirstName()));
         assertThat(originalLastName, not(equalTo(updatedCustomer.getLastName())));
+    }
+
+    @Test
+    public void deleteCustomer() throws Exception {
+        long id = getCustomerIdValue();
+
+        Customer originalCustomer = customerRepository.getOne(id);
+        assertNotNull(originalCustomer);
+
+        customerService.deleteCustomer(id);
+
+        Customer deletedCustomer = customerRepository.findById(id).orElse(null);
+
+        assertNull(deletedCustomer);
     }
 
     private Long getCustomerIdValue(){
