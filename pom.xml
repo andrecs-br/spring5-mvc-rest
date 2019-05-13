@@ -23,6 +23,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<org.mapstruct.version>1.2.0.CR2</org.mapstruct.version>
+		<spring-swagger>2.9.2</spring-swagger>
 	</properties>
 
 	<dependencies>
@@ -53,6 +54,16 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct-jdk8</artifactId>
             <version>${org.mapstruct.version}</version>
+        </dependency>
+        <dependency>
+        	<groupId>io.springfox</groupId>
+        	<artifactId>springfox-swagger2</artifactId>
+        	<version>${spring-swagger}</version>
+        </dependency>		
+        <dependency>
+        	<groupId>io.springfox</groupId>
+        	<artifactId>springfox-swagger-ui</artifactId>
+        	<version>${spring-swagger}</version>
         </dependency>		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
