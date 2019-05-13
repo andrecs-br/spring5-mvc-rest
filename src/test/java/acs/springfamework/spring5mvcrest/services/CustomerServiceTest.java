@@ -17,6 +17,7 @@ import org.mockito.MockitoAnnotations;
 import acs.springfamework.spring5mvcrest.api.v1.mapper.CustomerMapper;
 import acs.springfamework.spring5mvcrest.api.v1.model.CustomerDTO;
 import acs.springfamework.spring5mvcrest.domain.Customer;
+import acs.springfamework.spring5mvcrest.exceptions.ResourceNotFoundException;
 import acs.springfamework.spring5mvcrest.repositories.CustomerRepository;
 
 public class CustomerServiceTest {
@@ -75,10 +76,10 @@ public class CustomerServiceTest {
 
     }
 
-    @Test(expected=RuntimeException.class)
+    @Test(expected=ResourceNotFoundException.class)
     public void getCustomerByIdNotFound() throws Exception {
 
-        when(customerRepository.findById(anyLong())).thenReturn(Optional.of(null));
+        when(customerRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         //when
         CustomerDTO customerDTO = customerService.getCustomerById(ID);

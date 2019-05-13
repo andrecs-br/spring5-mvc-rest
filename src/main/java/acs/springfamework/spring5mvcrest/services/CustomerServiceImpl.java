@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import acs.springfamework.spring5mvcrest.api.v1.mapper.CustomerMapper;
 import acs.springfamework.spring5mvcrest.api.v1.model.CustomerDTO;
 import acs.springfamework.spring5mvcrest.domain.Customer;
+import acs.springfamework.spring5mvcrest.exceptions.ResourceNotFoundException;
 import acs.springfamework.spring5mvcrest.repositories.CustomerRepository;
 
 @Service
@@ -48,7 +49,7 @@ public class CustomerServiceImpl implements CustomerService {
 					CustomerDTO result = customerMapper.customerToCustomerDTO(customer);
 					result.setCustomerUrl(baseUrl + customer.getId());
 					return result;
-				}).orElseThrow(RuntimeException::new);
+				}).orElseThrow(ResourceNotFoundException::new);
 		
 	}
 
@@ -93,12 +94,13 @@ public class CustomerServiceImpl implements CustomerService {
 					}
 
 					return saveAndReturnDTO(customer);
-				}).orElseThrow(RuntimeException::new);
+				}).orElseThrow(ResourceNotFoundException::new);
 
 	}
 
 	@Override
 	public void deleteCustomer(Long idCustomer) {
+		this.getCustomerById(idCustomer); //just to validate costumer and throw an Exception if it doesn't exist
 		customerRepository.deleteById(idCustomer);
 	}
 

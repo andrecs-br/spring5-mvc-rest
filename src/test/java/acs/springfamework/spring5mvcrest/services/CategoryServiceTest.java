@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -59,7 +60,7 @@ public class CategoryServiceTest {
         category.setId(ID);
         category.setName(NAME);
 
-        when(categoryRepository.findByName(anyString())).thenReturn(category);
+        when(categoryRepository.findByName(anyString())).thenReturn(Optional.of(category));
 
         //when
         CategoryDTO categoryDTO = categoryService.getCategoryByName(NAME);

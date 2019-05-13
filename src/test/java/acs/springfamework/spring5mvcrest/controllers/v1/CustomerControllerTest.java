@@ -27,6 +27,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import acs.springfamework.spring5mvcrest.api.v1.model.CustomerDTO;
+import acs.springfamework.spring5mvcrest.controllers.handler.RestResponseEntityExceptionHandler;
+import acs.springfamework.spring5mvcrest.exceptions.ResourceNotFoundException;
 import acs.springfamework.spring5mvcrest.services.CustomerService;
 
 public class CustomerControllerTest extends AbstractRestControllerTest {
@@ -49,7 +51,9 @@ public class CustomerControllerTest extends AbstractRestControllerTest {
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		
-        mockMvc = MockMvcBuilders.standaloneSetup(customerController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(customerController)
+        		.setControllerAdvice(new RestResponseEntityExceptionHandler())
+        		.build();
 		
 	}
 
@@ -90,7 +94,17 @@ public class CustomerControllerTest extends AbstractRestControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstname", equalTo(FIRSTNAME)));
     }
-    
+
+    @Test
+    public void testGetByIdCustomerNotFound() throws Exception {
+
+        when(customerService.getCustomerById(anyLong())).thenThrow(new ResourceNotFoundException());
+
+        mockMvc.perform(get(getBaseUrl() + "/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
     @Test
     public void createNewCustomer() throws Exception {
         //given
@@ -170,7 +184,7 @@ public class CustomerControllerTest extends AbstractRestControllerTest {
         
         verify(customerService).deleteCustomer(anyLong());
     }
-    
+
     private String getBaseUrl() {
     	
     	return CustomerController.BASE_URL;

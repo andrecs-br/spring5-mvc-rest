@@ -1,5 +1,7 @@
 package acs.springfamework.spring5mvcrest.repositories;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import acs.springfamework.spring5mvcrest.domain.Category;
@@ -9,6 +11,6 @@ import acs.springfamework.spring5mvcrest.domain.Category;
  */
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 	
-	public Category findByName(String name);
+	public Optional<Category> findByName(String name);
 	
 }

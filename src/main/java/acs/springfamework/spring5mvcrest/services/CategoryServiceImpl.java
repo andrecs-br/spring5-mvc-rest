@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import acs.springfamework.spring5mvcrest.api.v1.mapper.CategoryMapper;
 import acs.springfamework.spring5mvcrest.api.v1.model.CategoryDTO;
+import acs.springfamework.spring5mvcrest.exceptions.ResourceNotFoundException;
 import acs.springfamework.spring5mvcrest.repositories.CategoryRepository;
 
 @Service
@@ -33,7 +34,14 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public CategoryDTO getCategoryByName(String name) {
-		return categoryMapper.categoryToCategoryDTO(categoryRepository.findByName(name));
+		
+		return categoryRepository
+			.findByName(name)
+			.map(category -> {
+				return categoryMapper.categoryToCategoryDTO(category);	
+			})
+			.orElseThrow(ResourceNotFoundException::new);
+		
 	}
 
 }

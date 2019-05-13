@@ -1,10 +1,10 @@
 package acs.springfamework.spring5mvcrest.controllers.v1;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import acs.springfamework.spring5mvcrest.api.v1.model.CategoryDTO;
@@ -22,19 +22,17 @@ public class CategoryController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<CategoryListDTO> getAllCategories() {
+	@ResponseStatus(HttpStatus.OK)
+	public CategoryListDTO getAllCategories() {
 		
-		return new ResponseEntity<CategoryListDTO>(
-				new CategoryListDTO(categoryService.getAllCategories()),
-				HttpStatus.OK);
+		return new CategoryListDTO(categoryService.getAllCategories());
 	}
 	
 	@GetMapping("/{idCategory}")
-	public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable String idCategory) {
+	@ResponseStatus(HttpStatus.OK)
+	public CategoryDTO getCategoryById(@PathVariable String idCategory) {
 		
-		return new ResponseEntity<CategoryDTO>(
-				categoryService.getCategoryByName(idCategory),
-				HttpStatus.OK);
+		return categoryService.getCategoryByName(idCategory);
 	}
 	
 }
