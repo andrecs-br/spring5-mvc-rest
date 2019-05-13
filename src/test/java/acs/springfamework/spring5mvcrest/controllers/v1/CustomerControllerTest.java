@@ -2,8 +2,10 @@ package acs.springfamework.spring5mvcrest.controllers.v1;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -17,20 +19,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import acs.springfamework.spring5mvcrest.api.v1.model.CustomerDTO;
-import acs.springfamework.spring5mvcrest.controllers.handler.RestResponseEntityExceptionHandler;
 import acs.springfamework.spring5mvcrest.exceptions.ResourceNotFoundException;
 import acs.springfamework.spring5mvcrest.services.CustomerService;
 
+@RunWith(SpringRunner.class)
+@WebMvcTest(controllers = {CustomerController.class})
 public class CustomerControllerTest extends AbstractRestControllerTest {
 	
 	public static final String FIRSTNAME = "Andre";
@@ -39,23 +42,11 @@ public class CustomerControllerTest extends AbstractRestControllerTest {
 
 	public static final String CUSTOMERURL = "/api/v1/customers/1";
 
-	@Mock
+	@MockBean
 	CustomerService customerService;
 	
-	@InjectMocks
-	CustomerController customerController;
-	
+	@Autowired
 	MockMvc mockMvc;
-
-	@Before
-	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
-		
-        mockMvc = MockMvcBuilders.standaloneSetup(customerController)
-        		.setControllerAdvice(new RestResponseEntityExceptionHandler())
-        		.build();
-		
-	}
 
     @Test
     public void testListCustomers() throws Exception {
@@ -72,7 +63,8 @@ public class CustomerControllerTest extends AbstractRestControllerTest {
 
         List<CustomerDTO> customers = Arrays.asList(customer1, customer2);
 
-        when(customerService.getAllCustomers()).thenReturn(customers);
+              
+        given(customerService.getAllCustomers()).willReturn(customers);
 
         mockMvc.perform(get(getBaseUrl())
                 .contentType(MediaType.APPLICATION_JSON))
@@ -181,6 +173,18 @@ public class CustomerControllerTest extends AbstractRestControllerTest {
     	//when/then
         mockMvc.perform(delete(getBaseUrl() + "/1"))
                 .andExpect(status().isOk());
+        
+        verify(customerService).deleteCustomer(anyLong());
+    }
+
+    @Test
+    public void deleteCustomerNotFound() throws Exception {
+
+        doThrow(new ResourceNotFoundException()).when(customerService).deleteCustomer(anyLong());
+    	
+    	//when/then
+        mockMvc.perform(delete(getBaseUrl() + "/1"))
+                .andExpect(status().isNotFound());
         
         verify(customerService).deleteCustomer(anyLong());
     }
