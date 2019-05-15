@@ -1,5 +1,6 @@
 package acs.springfamework.spring5mvcrest.controllers.v1;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +21,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-@Api(tags={"Customers"})
+@Api(tags={"Customer Controller"})
 @RestController
 @RequestMapping(CustomerController.BASE_URL)
 public class CustomerController {
@@ -29,6 +30,7 @@ public class CustomerController {
 	
 	private final CustomerService customerService;
 
+	@Autowired
 	public CustomerController(CustomerService customerService) {
 		this.customerService = customerService;
 	}
