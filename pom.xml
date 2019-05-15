@@ -24,6 +24,7 @@
 		<java.version>1.8</java.version>
 		<org.mapstruct.version>1.2.0.CR2</org.mapstruct.version>
 		<spring-swagger>2.9.2</spring-swagger>
+		<woodstox.version>4.4.1</woodstox.version>
 	</properties>
 
 	<dependencies>
@@ -47,7 +48,7 @@
         <dependency>
             <groupId>org.codehaus.woodstox</groupId>
             <artifactId>woodstox-core-asl</artifactId>
-            <version>4.4.1</version>
+            <version>${woodstox.version}</version>
         </dependency>		
 		<dependency>
 			<groupId>com.h2database</groupId>
@@ -133,6 +134,26 @@
                     <useSystemClassLoader>false</useSystemClassLoader>
                 </configuration>
             </plugin>
+			<plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxb2-maven-plugin</artifactId>
+                <version>2.3.1</version>
+                <executions>
+                    <execution>
+                        <id>xjc</id>
+                        <goals>
+                            <goal>xjc</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- The package of your generated sources -->
+                    <packageName>acs.springframework.spring5mvcrest.model</packageName>
+                    <sources>
+                        <source>src/main/resources/xsd</source>
+                    </sources>
+                </configuration>
+            </plugin>            
         </plugins>
     </build>
     
