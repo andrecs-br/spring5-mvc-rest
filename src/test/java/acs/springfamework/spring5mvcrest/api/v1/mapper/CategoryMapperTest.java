@@ -18,12 +18,12 @@ public class CategoryMapperTest {
     public void categoryToCategoryDTO() throws Exception {
 
         //given
-        Category category = new Category();
-        category.setName(NAME);
-        category.setId(ID);
+        Category category2 = new Category();
+        category2.setName(NAME);
+        category2.setId(ID);
 
         //when
-        CategoryDTO categoryDTO = categoryMapper.categoryToCategoryDTO(category);
+        CategoryDTO categoryDTO = categoryMapper.categoryToCategoryDTO(category2);
 
         //then
         assertEquals(Long.valueOf(ID), categoryDTO.getId());
